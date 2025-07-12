@@ -34,18 +34,20 @@ public class AccountController {
         return accountService.findAccountByAccountNumber(accountNumber);
     }
 
+
     @GetMapping("/{customerId}")
     public AccountResponse findAccountByCustomerId(@PathVariable Integer customerId) {
         return accountService.findAccountByCustomerId(customerId);
     }
 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{accountNumber}")
     public void deleteAccountByAccountNumber(@PathVariable String accountNumber) {
         accountService.deleteAccountByAccountNumber(accountNumber);
 
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{accountNumber}")
     public AccountResponse updateAccount(@PathVariable String accountNumber, @RequestBody UpdateAccountRequest dto) {
         return accountService.updateAccount(accountNumber,dto);
