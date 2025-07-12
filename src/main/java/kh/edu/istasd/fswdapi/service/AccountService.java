@@ -11,6 +11,6 @@ public interface AccountService {
     AccountResponse findAccountByCustomerId(Integer customerId);
     void deleteAccountByAccountNumber(String accountNumber);
     AccountResponse updateAccount(String accountNumber,UpdateAccountRequest dto);
-    void disableAccountByAccountNumber(String accountNumber, boolean disable);
+    AccountResponse disableAccountByAccountNumber(String accountNumber, boolean disable);
 
 }

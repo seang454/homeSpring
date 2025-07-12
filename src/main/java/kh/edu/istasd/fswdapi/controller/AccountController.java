@@ -23,30 +23,36 @@ public class AccountController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    AccountResponse createAccount(@RequestBody CreateNewAccount createNewAccount) {
+    public AccountResponse createAccount(@RequestBody CreateNewAccount createNewAccount) {
         log.info("Create new account {}", createNewAccount);
         return accountService.createAccount(createNewAccount);
     }
 
     @GetMapping("/{accountNumber}")
-    AccountResponse findAccountByAccountNumber(@PathVariable String accountNumber) {
+    public AccountResponse findAccountByAccountNumber(@PathVariable String accountNumber) {
         log.info("Find account by account number {}", accountNumber);
         return accountService.findAccountByAccountNumber(accountNumber);
     }
 
-    AccountResponse findAccountByCustomerId(Integer customerId) {
-        return null;
+    @GetMapping("/{customerId}")
+    public AccountResponse findAccountByCustomerId(@PathVariable Integer customerId) {
+        return accountService.findAccountByCustomerId(customerId);
     }
 
-    void deleteAccountByAccountNumber(Integer accountNumber) {
+    @DeleteMapping("/{accountNumber}")
+    public void deleteAccountByAccountNumber(@PathVariable String accountNumber) {
+        accountService.deleteAccountByAccountNumber(accountNumber);
 
     }
 
-    AccountResponse updateAccount(UpdateAccountRequest dto) {
-        return null;
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PatchMapping("/{accountNumber}")
+    public AccountResponse updateAccount(@PathVariable String accountNumber, @RequestBody UpdateAccountRequest dto) {
+        return accountService.updateAccount(accountNumber,dto);
     }
 
-    void disableAccountByAccountNumber(Integer accountNumber, boolean disable) {
-
+    @PatchMapping
+    public AccountResponse disableAccountByAccountNumber(@PathVariable String accountNumber, boolean disable) {
+       return accountService.disableAccountByAccountNumber(accountNumber,disable);
     }
 }

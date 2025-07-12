@@ -57,8 +57,10 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public void disableAccountByAccountNumber(String accountNumber, boolean disable) {
+    public AccountResponse disableAccountByAccountNumber(String accountNumber, boolean disable) {
         Account account = accountRepository.findAccountsByAccountNumberIgnoreCase(accountNumber).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Account not found"));
         account.setIsDeleted(disable);
+        Account newAccount = accountRepository.save(account);
+        return accountMapper.fromAccount(newAccount);
     }
 }
