@@ -5,6 +5,7 @@ import kh.edu.istasd.fswdapi.dto.CustomerResponse;
 import kh.edu.istasd.fswdapi.dto.UpdateCustomerRequest;
 import kh.edu.istasd.fswdapi.dto.account.AccountResponse;
 import kh.edu.istasd.fswdapi.dto.account.CreateNewAccount;
+import kh.edu.istasd.fswdapi.dto.account.DisableAccount;
 import kh.edu.istasd.fswdapi.dto.account.UpdateAccountRequest;
 import kh.edu.istasd.fswdapi.service.AccountService;
 import lombok.RequiredArgsConstructor;
@@ -28,15 +29,15 @@ public class AccountController {
         return accountService.createAccount(createNewAccount);
     }
 
-    @GetMapping("/{accountNumber}")
+    @GetMapping("/number/{accountNumber}")
     public AccountResponse findAccountByAccountNumber(@PathVariable String accountNumber) {
         log.info("Find account by account number {}", accountNumber);
         return accountService.findAccountByAccountNumber(accountNumber);
     }
 
 
-    @GetMapping("/{customerId}")
-    public AccountResponse findAccountByCustomerId(@PathVariable Integer customerId) {
+    @GetMapping("/customerId/{customerId}")
+    public List<AccountResponse> findAccountByCustomerId(@PathVariable Integer customerId) {
         return accountService.findAccountByCustomerId(customerId);
     }
 
@@ -53,8 +54,8 @@ public class AccountController {
         return accountService.updateAccount(accountNumber,dto);
     }
 
-    @PatchMapping
-    public AccountResponse disableAccountByAccountNumber(@PathVariable String accountNumber, boolean disable) {
-       return accountService.disableAccountByAccountNumber(accountNumber,disable);
+    @PatchMapping("/disable/{accountNumber}")
+    public AccountResponse disableAccountByAccountNumber(@PathVariable String accountNumber, @RequestBody DisableAccount disableAccount) {
+       return accountService.disableAccountByAccountNumber(accountNumber,disableAccount.is_deleted());
     }
 }

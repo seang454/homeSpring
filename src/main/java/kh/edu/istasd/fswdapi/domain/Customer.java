@@ -1,5 +1,6 @@
 package kh.edu.istasd.fswdapi.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,8 @@ public class Customer {
     @Column(nullable = false)
     private Boolean isDeleted;
 
-    @OneToMany(mappedBy = "customer") //customer refer to 'customer' name in Account
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
+    @JsonIgnore                     //customer refer to 'customer' name in Account
                                     // one customer can have many Account
                                     // mappedBy is used to tell Hibernate that the relationship is already define in another side
     private List<Account> accounts;

@@ -13,6 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -32,14 +35,14 @@ public class AccountServiceImpl implements AccountService {
     public AccountResponse findAccountByAccountNumber(String accountNumber) {
         log.info("Find account by account number {}", accountNumber);
         Account account = accountRepository.findAccountsByAccountNumberIgnoreCase(accountNumber).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Account not found"));
-        log.info("Found account by account number {}", account);
+        log.info("Found account {}", account.toString());
         return accountMapper.fromAccount(account);
     }
 
     @Override
-    public AccountResponse findAccountByCustomerId(Integer customerId) {
-        Account account = accountRepository.findAccountsByCustomer_Id(customerId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Account not found"));
-        return accountMapper.fromAccount(account);
+    public List<AccountResponse> findAccountByCustomerId(Integer customerId) {
+        List<Account> account = accountRepository.findAccountsByCustomer_Id(customerId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Account not found"));
+        return account.stream().map(accountMapper::fromAccount).toList();
     }
 
     @Override
@@ -50,7 +53,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public AccountResponse updateAccount(String accountNumber,UpdateAccountRequest dto) {
+
         Account account = accountRepository.findAccountsByAccountNumberIgnoreCase(accountNumber).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Account not found"));
+        log.info("Updating account {}", account);
+
         accountMapper.updateAccount(dto, account);
         Account newAccount = accountRepository.save(account);
         return accountMapper.fromAccount(newAccount);
