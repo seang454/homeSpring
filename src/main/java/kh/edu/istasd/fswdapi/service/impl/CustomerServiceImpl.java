@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -23,6 +24,15 @@ import java.util.List;
 public class CustomerServiceImpl implements CustomerService {
     private final CustomerRepository customerRepository;
     private final CustomerMapper customerMapper;
+
+    @Transactional
+    @Override
+    public void disableByPhoneNumber(String phoneNumber) {
+        if (!customerRepository.existsByPhoneNumber(phoneNumber)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "customer phone number does not exist");
+        }
+        customerRepository.disableByPhoneNumber(phoneNumber);
+    }
 
     @Override
     public CustomerResponse createCustomer(CreateCustomerRequest createCustomerRequest) {
@@ -57,7 +67,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerResponse> getAllCustomers() {
-        List<Customer> customers = customerRepository.findAll();
+        List<Customer> customers = customerRepository.findAllByIsDeletedFalse();
         if (customers.isEmpty()){
             throw  new ResponseStatusException(HttpStatus.NOT_FOUND, "No customers found");
         }
@@ -118,7 +128,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerResponse getCustomerByPhoneNumber(String phoneNumber) {
-        return customerRepository.findByPhoneNumber(phoneNumber)
+        return customerRepository.findByPhoneNumberAndIsDeletedFalse(phoneNumber)
                 .map(customer ->
                         CustomerResponse.builder()
                                 .fullName(customer.getFullName())
@@ -131,7 +141,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerResponse updateCustomerByPhoneNumber(String phoneNumber, UpdateCustomerRequest updateCustomerRequest) {
         Customer customer = customerRepository
-                .findByPhoneNumber(phoneNumber)
+                .findByPhoneNumberAndIsDeletedFalse(phoneNumber)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer with this numberPhone do not exist to update"));
         customerMapper.toCustomerPartially(updateCustomerRequest, customer);
         customer = customerRepository.save(customer);
@@ -141,7 +151,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteCustomerByPhoneNumber(String phoneNumber) {
         Customer customer = customerRepository
-                .findByPhoneNumber(phoneNumber)
+                .findByPhoneNumberAndIsDeletedFalse(phoneNumber)
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "Customer with this numberPhone do not exist to update"));
         customerRepository.delete(customer);
     }

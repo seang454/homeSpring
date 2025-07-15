@@ -8,6 +8,7 @@ import kh.edu.istasd.fswdapi.dto.account.UpdateAccountRequest;
 import java.util.List;
 
 public interface AccountService {
+    void disableByPhoneNumber(String phoneNumber);
     AccountResponse createAccount(CreateNewAccount createNewAccount);
     AccountResponse findAccountByAccountNumber(String accountNumber);
     List<AccountResponse> findAccountByCustomerId(Integer customerId);

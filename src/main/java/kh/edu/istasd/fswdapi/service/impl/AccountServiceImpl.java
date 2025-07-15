@@ -24,6 +24,11 @@ public class AccountServiceImpl implements AccountService {
     private final AccountMapper accountMapper;
 
     @Override
+    public void disableByPhoneNumber(String phoneNumber) {
+
+    }
+
+    @Override
     public AccountResponse createAccount(CreateNewAccount createNewAccount) {
         Account account = accountMapper.toAccount(createNewAccount);
         account.setIsDeleted(false);

@@ -8,6 +8,7 @@ import kh.edu.istasd.fswdapi.dto.UpdateCustomerRequest;
 import java.util.List;
 
 public interface CustomerService {
+    void disableByPhoneNumber(String phoneNumber);
     public CustomerResponse createCustomer(CreateCustomerRequest createCustomerRequest);
     public List<CustomerResponse> getAllCustomers();
     public CustomerResponse getCustomerById(int id);
