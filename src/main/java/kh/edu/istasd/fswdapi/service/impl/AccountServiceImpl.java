@@ -1,11 +1,13 @@
 package kh.edu.istasd.fswdapi.service.impl;
 
 import kh.edu.istasd.fswdapi.domain.Account;
+import kh.edu.istasd.fswdapi.domain.CustomerSegment;
 import kh.edu.istasd.fswdapi.dto.account.AccountResponse;
 import kh.edu.istasd.fswdapi.dto.account.CreateNewAccount;
 import kh.edu.istasd.fswdapi.dto.account.UpdateAccountRequest;
 import kh.edu.istasd.fswdapi.mapper.AccountMapper;
 import kh.edu.istasd.fswdapi.repository.AccountRepository;
+import kh.edu.istasd.fswdapi.repository.CustomerSegmentRepository;
 import kh.edu.istasd.fswdapi.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,6 +24,7 @@ import java.util.List;
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final AccountMapper accountMapper;
+    private final CustomerSegmentRepository customerSegmentRepository;
 
     @Override
     public void disableByPhoneNumber(String phoneNumber) {
@@ -31,10 +34,11 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponse createAccount(CreateNewAccount createNewAccount) {
         Account account = accountMapper.toAccount(createNewAccount);
-
         log.info("createAccount account: {}", account);
+        CustomerSegment customerSegment = customerSegmentRepository.findByCustomerSegmentId(createNewAccount.segment_id());
 
         account.setIsDeleted(false);
+        account.setSegment(customerSegment);
         accountRepository.save(account);
         return accountMapper.fromAccount(account);
     }
