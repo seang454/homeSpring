@@ -7,6 +7,12 @@ public record CreateCustomerRequest (
         @NotBlank(message = "FullName is required")
         String fullName,
 
+        @NotBlank(message = "nationalCard is required")
+        String nationalCardId,
+
+        @NotBlank(message = "segmentId is required")
+        Integer segmentId,
+
         @NotBlank(message = "Gender is required")
         String gender,
         String email,

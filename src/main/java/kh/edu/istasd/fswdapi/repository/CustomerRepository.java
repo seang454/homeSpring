@@ -28,6 +28,8 @@ public interface CustomerRepository extends JpaRepository<Customer,Integer> {
                                  c.phoneNumber = ?1)
             """,nativeQuery = false)
     boolean existsByPhoneNumber(String phone);
+    boolean existsByNationalCardId(String nationalCardId);
+    boolean existsById(Integer id);
 
     Optional<Customer> findByPhoneNumberAndIsDeletedFalse(String phoneNumber);
 

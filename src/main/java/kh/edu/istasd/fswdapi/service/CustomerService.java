@@ -17,4 +17,6 @@ public interface CustomerService {
     public CustomerResponse getCustomerByPhoneNumber(String phoneNumber);
     public CustomerResponse updateCustomerByPhoneNumber(String phoneNumber, UpdateCustomerRequest updateCustomerRequest);
     void deleteCustomerByPhoneNumber(String phoneNumber);
+    boolean exitsByNationalCardId(String nationalCardId);
+    boolean exitsById(Integer id);
 }

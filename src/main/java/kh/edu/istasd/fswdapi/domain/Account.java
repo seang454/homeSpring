@@ -4,9 +4,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
+@ToString
 @Setter
 @Getter
 @NoArgsConstructor
@@ -39,6 +41,10 @@ public class Account {
                                   // name is used to custom column name of relation
                                   //referencedColumnName one customer field
     private Customer customer;
+
+    @ManyToOne
+    @JoinColumn(name = "segment_id")
+    private CustomerSegment segment;
 
     @OneToMany(mappedBy = "sender")
     private List<Transaction> sentTransactions;

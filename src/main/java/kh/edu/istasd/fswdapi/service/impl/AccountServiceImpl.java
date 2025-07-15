@@ -31,6 +31,9 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public AccountResponse createAccount(CreateNewAccount createNewAccount) {
         Account account = accountMapper.toAccount(createNewAccount);
+
+        log.info("createAccount account: {}", account);
+
         account.setIsDeleted(false);
         accountRepository.save(account);
         return accountMapper.fromAccount(account);

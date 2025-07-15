@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @Table(name = "customers")
+@ToString
 public class Customer {
 
     @Id
@@ -21,6 +23,9 @@ public class Customer {
 
     @Column(nullable = false)
     private String fullName;
+
+    @Column(nullable = false,unique = true)
+    private String nationalCardId;
 
     @Column(length = 15,nullable = false)
     private String gender;
@@ -37,12 +42,16 @@ public class Customer {
     @Column(nullable = false)
     private Boolean isDeleted;
 
+    @ManyToOne
+    @JoinColumn(name = "segment_id")
+    private CustomerSegment segment;
+
+
     @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY)
     @JsonIgnore                     //customer refer to 'customer' name in Account
                                     // one customer can have many Account
                                     // mappedBy is used to tell Hibernate that the relationship is already define in another side
     private List<Account> accounts;
-
 
       //using reference key
 //    @OneToOne

@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface KYCRepository extends JpaRepository<KYC,Integer> {
+    boolean existsByNationalCardId(String nationalCardId);
 }
