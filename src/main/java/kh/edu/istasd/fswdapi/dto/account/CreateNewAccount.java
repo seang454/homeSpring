@@ -1,6 +1,6 @@
 package kh.edu.istasd.fswdapi.dto.account;
 
-public record CreateNewAccount(
+public record  CreateNewAccount(
         Integer segment_id,
         Integer customerId,
         Integer accountTypeId,

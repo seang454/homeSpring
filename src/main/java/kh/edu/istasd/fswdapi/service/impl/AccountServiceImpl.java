@@ -42,7 +42,6 @@ public class AccountServiceImpl implements AccountService {
 
         CustomerSegment customerSegment = customerSegmentRepository.findByCustomerSegmentId(createNewAccount.segment_id());
         customer.setSegment(customerSegment);
-
         account.setIsDeleted(false);
         account.setSegment(customerSegment);
         account.setCustomer(customer);

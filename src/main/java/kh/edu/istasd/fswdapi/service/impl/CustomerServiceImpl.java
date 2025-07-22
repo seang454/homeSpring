@@ -52,6 +52,9 @@ public class CustomerServiceImpl implements CustomerService {
         if (customerRepository.existsByPhoneNumber(createCustomerRequest.phoneNumber())) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Phone number already exists");
         }
+        if (customerRepository.existsByNationalCardId(createCustomerRequest.nationalCardId())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "National card id already exists");
+        }
 
         log.info("Creating new customer with: {}", createCustomerRequest);
 

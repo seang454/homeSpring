@@ -30,6 +30,7 @@ public class KYCServiceImpl implements KYCService {
         if (!customer.getNationalCardId().equals(kyc.getNationalCardId())) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "customer national card id does not match");
         }
+
         kyc.setIsVerified(true);
         kycRepository.save(kyc);
     }
