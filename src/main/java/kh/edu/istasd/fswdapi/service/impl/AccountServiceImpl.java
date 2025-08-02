@@ -45,6 +45,7 @@ public class AccountServiceImpl implements AccountService {
         account.setIsDeleted(false);
         account.setSegment(customerSegment);
         account.setCustomer(customer);
+
         accountRepository.save(account);
         return accountMapper.fromAccount(account);
     }
