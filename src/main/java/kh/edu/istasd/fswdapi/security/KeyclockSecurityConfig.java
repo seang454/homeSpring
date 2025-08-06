@@ -51,6 +51,7 @@ public class KeyclockSecurityConfig {
                         .requestMatchers(HttpMethod.GET,"api/v1/customers/**").hasAnyRole(ROLE_ADMIN, ROLE_CUSTOMER,ROLE_STAFF, ROLE_USER)
                         .requestMatchers("api/v1/accounts/**").hasAnyRole(ROLE_ADMIN, ROLE_CUSTOMER,ROLE_STAFF,ROLE_USER)
                         .requestMatchers("api/v1/media/**").permitAll()
+                        .requestMatchers("api/v1/auth/**").permitAll()
                         .anyRequest()
                         .authenticated()
         );
